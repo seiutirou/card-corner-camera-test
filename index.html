@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>カードカメラテスト</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 16px; }
+    video { width: 100%; max-width: 420px; background: #222; }
+    button { padding: 16px; font-size: 18px; margin: 12px; }
+  </style>
+</head>
+<body>
+  <h2>カード四隅メーカー</h2>
+  <p>iPhone カメラ動作確認</p>
+  <button id="start">カメラを起動</button>
+  <video id="camera" autoplay playsinline muted></video>
+  <p id="status">待機中</p>
+
+  <script>
+    document.getElementById("start").onclick = async () => {
+      const status = document.getElementById("status");
+      status.textContent = "カメラを起動しています…";
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+          audio: false
+        });
+        document.getElementById("camera").srcObject = stream;
+        status.textContent = "カメラ起動成功！";
+      } catch (error) {
+        status.textContent = "エラー: " + error.name + " / " + error.message;
+      }
+    };
+  </script>
+</body>
+</html>
